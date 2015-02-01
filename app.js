@@ -32,6 +32,10 @@ app.use(function(req, res, next) {
     next(err);
 });
 
+//-------------------------------
+//app.get('/',routes.projects);
+//-------------------------------
+
 // error handlers
 
 // development error handler
