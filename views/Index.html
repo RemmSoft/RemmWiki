@@ -3,17 +3,294 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <link data-require="bootstrap.css" data-semver="3.3.1" rel="stylesheet"  src="../lib/css/bootstrap.css" />
+    <link data-require="bootstrap.css"  rel="stylesheet"  href="../lib/css/bootstrap.min.css" />
+    <link data-require="bootstrap-combined.min.css"  rel="stylesheet"  href="../lib/css/bootstrap-combined.min.css" />
+    <link data-require="siteCSS.css"  rel="stylesheet"  href="../lib/css/siteCSS.css" />
 
-    <script data-require="jquery@2.1.3" data-semver="2.1.3" src="../lib/js/jquery-2.1.3.min.js"></script>
+
+
+    <script data-require="jquery-2.1.3" data-semver="2.1.3" src="../lib/js/jquery-2.1.3.min.js"></script>
     <script data-require="three.js" data-semver="0.0.0r67" src="../lib/js/three.min.js"></script>
     <script data-require="angular.min.js" src="../lib/js/angular.min.js"></script>
     <script data-require="bootstrap.js" src="../lib/js/bootstrap.js"></script>
-
-
     <script data-require="treeViewJS.js" src="../lib/js/treeViewJS.js"></script>
+
+
 </head>
 <body>
-   <p>text</p>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img alt="Brand" src="" />
+        </a>
+    </div>
+</nav>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-4">
+            <input type="text" class="searchbox" id="searchText" name="searchText" />
+            <br />
+            <input type="submit" value="Ara" />
+            <hr />
+            <div class="tree well">
+                <ul>
+                    <li>
+                <span>
+                  <i class="icon-folder-open"></i>
+
+
+ Parent</span>
+                        <a href="">Goes somewhere</a>
+                        <ul>
+                            <li>
+                    <span>
+                      <i class="icon-minus-sign"></i>
+                        Child</span>
+                                <a href="">Goes somewhere</a>
+                                <ul>
+                                    <li>
+                                        <span><i class="icon-leaf"></i>
+                                            Grand Child</span>
+                                        <a href="">Goes somewhere</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                    <span>
+                      <i class="icon-minus-sign"></i>
+                        Child</span>
+                                <a href="">Goes somewhere</a>
+                                <ul>
+                                    <li>
+                        <span>
+                          <i class="icon-leaf"></i>
+                            Grand Child</span>
+                                        <a href="">Goes somewhere</a>
+                                    </li>
+                                    <li>
+                        <span>
+                          <i class="icon-minus-sign"></i>
+                            Grand Child</span>
+                                        <a href="">Goes somewhere</a>
+                                        <ul><li><span><i class="icon-minus-sign"></i>Great Grand Child</span>
+                                                <a href="">Goes somewhere</a>
+                                                <ul>
+                                                    <li><span><i class="icon-leaf"></i>
+                                                        Great great Grand Child</span>
+                                                        <a href="">Goes somewhere</a>
+                                                    </li>
+                                                    <li>
+                                <span>
+                                  <i class="icon-leaf"></i>
+                                    Great great Grand Child</span>
+                                                        <a href="">Goes somewhere</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                            <span>
+                              <i class="icon-leaf"></i>
+
+
+ Great Grand Child</span>
+                                                <a href="">Goes somewhere</a>
+                                            </li>
+                                            <li>
+                            <span>
+                              <i class="icon-leaf"></i>
+
+
+ Great Grand Child</span>
+                                                <a href="">Goes somewhere</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                        <span>
+                          <i class="icon-leaf"></i>
+
+
+ Grand Child</span>
+                                        <a href="">Goes somewhere</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                <span>
+                  <i class="icon-folder-open"></i>
+
+
+ Parent2</span>
+                        <a href="">Goes somewhere</a>
+                        <ul>
+                            <li>
+                    <span>
+                      <i class="icon-leaf"></i>
+
+
+ Child</span>
+                                <a href="">Goes somewhere</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="tree">
+                <ul>
+                    <li>
+                <span>
+                  <i class="icon-calendar"></i>
+
+
+ 2013, Week 2</span>
+                        <ul>
+                            <li>
+                    <span class="badge badge-success">
+                      <i class="icon-minus-sign"></i>
+
+
+ Monday, January 7: 8.00 hours</span>
+                                <ul>
+                                    <li>
+                                        <a href="">
+                          <span>
+                            <i class="icon-time"></i>
+
+
+ 8.00</span>
+
+
+                                            – Changed CSS to accomodate...</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                    <span class="badge badge-success">
+                      <i class="icon-minus-sign"></i>
+
+
+ Tuesday, January 8: 8.00 hours</span>
+                                <ul>
+                                    <li>
+                        <span>
+                          <i class="icon-time"></i>
+
+
+ 6.00</span>
+
+
+                                        –                                                                         <a href="">Altered code...</a>
+                                    </li>
+                                    <li>
+                        <span>
+                          <i class="icon-time"></i>
+
+
+ 2.00</span>
+
+
+                                        –                                                                         <a href="">Simplified our approach to...</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                    <span class="badge badge-warning">
+                      <i class="icon-minus-sign"></i>
+
+
+ Wednesday, January 9: 6.00 hours</span>
+                                <ul>
+                                    <li>
+                                        <a href="">
+                          <span>
+                            <i class="icon-time"></i>
+
+
+ 3.00</span>
+
+
+                                            – Fixed bug caused by...</a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                          <span>
+                            <i class="icon-time"></i>
+
+
+ 3.00</span>
+
+
+                                            – Comitting latest code to Git...</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                    <span class="badge badge-important">
+                      <i class="icon-minus-sign"></i>
+
+
+ Wednesday, January 9: 4.00 hours</span>
+                                <ul>
+                                    <li>
+                                        <a href="">
+                          <span>
+                            <i class="icon-time"></i>
+
+
+ 2.00</span>
+
+
+                                            – Create component that...</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                <span>
+                  <i class="icon-calendar"></i>
+
+
+ 2013, Week 3</span>
+                        <ul>
+                            <li>
+                    <span class="badge badge-success">
+                      <i class="icon-minus-sign"></i>
+
+
+ Monday, January 14: 8.00 hours</span>
+                                <ul>
+                                    <li>
+                        <span>
+                          <i class="icon-time"></i>
+
+
+ 7.75</span>
+
+
+                                        <a href="">Writing documentation...</a>
+                                    </li>
+                                    <li>
+                        <span>
+                          <i class="icon-time"></i>
+
+
+ 0.25</span>
+
+
+                                        –<a href="">Reverting code back to...</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8"></div>
+    </div>
+</div>
 </body>
 </html>
