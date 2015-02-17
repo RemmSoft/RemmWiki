@@ -1,0 +1,16 @@
+.col-md-4 {
+  padding:60px;
+  height:100%;
+  border-right-style: solid;
+  border-right-width: medium;
+  width:350px;
+  background-color: #a0d119;
+}
+.col-md-8{
+  padding:60px;
+
+
+}
+.searchbox{
+  width:180px;
+}

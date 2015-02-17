@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name rsWikiClientSideApp
+ * @name rsAppsApp
  * @description
- * # rsWikiClientSideApp
+ * # rsAppsApp
  *
  * Main module of the application.
  */
 angular
-  .module('rsWikiClientSideApp', [
+  .module('rsAppsApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -26,6 +26,10 @@ angular
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
+      })
+      .when('/Rswiki',{
+        templateUrl: 'views/RS-Wiki.html',
+        controller:'RsWikiCtrl'
       })
       .otherwise({
         redirectTo: '/'

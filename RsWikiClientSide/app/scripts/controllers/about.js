@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name rsWikiClientSideApp.controller:AboutCtrl
+ * @name rsAppsApp.controller:AboutCtrl
  * @description
  * # AboutCtrl
- * Controller of the rsWikiClientSideApp
+ * Controller of the rsAppsApp
  */
-angular.module('rsWikiClientSideApp')
+angular.module('rsAppsApp')
   .controller('AboutCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
