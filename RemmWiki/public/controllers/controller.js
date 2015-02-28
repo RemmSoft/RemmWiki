@@ -25,5 +25,10 @@ refresh();
 		});
 	};
 
+	$scope.selectDoc = function(doc){
+		console.log(doc);//	Burdan devam et editleme ve update kısmını yap
+		//ust tarafa edit butonu koy tıklayında inputları how et tıklı değilse sadece contenti bas
+	};
+
 }]);
 
