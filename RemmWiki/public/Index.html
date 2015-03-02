@@ -12,7 +12,7 @@
 		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">
-					<img alt="RemmSoft Wiki" src="...">
+					<img ng-src="{{currentProject.image}}" alt="{{currentProject.name}}">
 				</a>
 			</div>
 			<form class="navbar-form navbar-left" role="search">
@@ -24,32 +24,83 @@
 		</div>
 	</nav>
 
-	<div class="conteiner" ng-controller="AppController">
+	<div class="conteiner" ng-controller="AppController" style="margin-left:8px;margin-right:8px;">
 		<div class="row">
 			<div class="col-md-2">
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="input-group">
-							<input type="text" class="form-control" ng-model="doc.subject" placeholder="Yeni Döküman...">
+						<div class="input-group  input-group-sm">
+							<input type="text" class="form-control " ng-model="doc.subject" placeholder="Yeni Döküman...">
 							<span class="input-group-btn">
-							<button class="btn btn-default btn-primary" type="button" ng-click="addDoc()">Ekle</button>
+								<button class="btn btn-default btn-primary" type="button" ng-click="addDoc()">Ekle</button>
 							</span>
 						</div><!-- /input-group -->
 					</div><!-- /.col-lg-12 -->	
 				</div>
 				<div class="row">
 					<ul class="nav nav-pills nav-stacked" id="rs-docList">	
-						<li role="presentation" ng-repeat="doc in docList" ng-click="selectDoc(doc)"><a href="#">{{doc.subject}}</a></li>				
+						<li role="presentation" ng-repeat="doc in docList" ng-click="selectDoc(doc._id)"><a href="#">{{doc.subject}}</a></li>				
 					</ul>
 				</div>
 			</div>
 
 			<div class="col-md-10">		
-
-				<div id="rs-content">
-
-				</div>
-
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row">					
+							<button class="btn btn-info btn-sm" ng-click="save(selectedDoc)">Kaydet</button>
+							<button class="btn btn-danger  btn-sm" ng-click="remove(selectedDoc._id)">Sil</button>
+						</div>
+						<hr/>
+						<div class="row">
+							<div class="col-md-12">
+								<label> ID: {{selectedDoc._id}} </label>
+							</div>
+							<div class="col-md-6">							
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="sizing-addon-subject">Subject</span>
+									<input type="text" class="form-control" placeholder="Subject" aria-describedby="sizing-addon-subject" ng-model="selectedDoc.subject">
+								</div>
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="sizing-addon-parentId">Parent Id</span>
+									<input type="text" class="form-control" placeholder="Parent Id" aria-describedby="sizing-addon-parentId" ng-model="selectedDoc.parentId">
+								</div>			
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="sizing-addon-docVersion">Document Ver</span>
+									<input type="text" class="form-control" placeholder="Document Version" aria-describedby="sizing-addon-docVersion" ng-model="selectedDoc.docVersion">
+								</div>
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="sizing-addon-orderIndex">Order Index</span>
+									<input type="number" class="form-control" placeholder="Order Index" aria-describedby="sizing-addon-orderIndex" ng-model="selectedDoc.orderIndex">
+								</div>
+							</div>
+							<div class="col-md-6">																
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="sizing-addon-createDate">Create Date</span>
+									<input type="text" class="form-control" placeholder="Create Date" aria-describedby="sizing-addon-createDate" ng-model="selectedDoc.createDate">
+								</div>
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="sizing-addon-createBy">Create By</span>
+									<input type="number" class="form-control" placeholder="Create By" aria-describedby="sizing-addon-createBy" ng-model="selectedDoc.createBy">
+								</div>
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="sizing-addon-updateDate">Update Date</span>
+									<input type="text" class="form-control" placeholder="Update Date" aria-describedby="sizing-addon-updateDate" ng-model="selectedDoc.updateDate">
+								</div>
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="sizing-addon-updateBy">Update By</span>
+									<input type="number" class="form-control" placeholder="Update By" aria-describedby="sizing-addon-updateBy" ng-model="selectedDoc.updateBy">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-md-12">
+						<div id="rs-content" ng-model="selectedDoc.docContent" style="margin-top:10px;border-width:1px;border-color:#7f8c8d;border-style:solid;border-radius:3px;padding:2px;height:100%;">							
+						</div>
+					</div>
+				</div>		
 			</div>
 		</div>
 	</div>

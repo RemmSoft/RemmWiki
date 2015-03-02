@@ -5,29 +5,61 @@ myApp.controller('AppController',['$scope','$http',function($scope,$http){
 
 	$scope.docList=null;
 	$scope.selectedDoc=null;
-	$scope.currentProjectId =null;//
+	$scope.currentProject = {
+	id : "54f3c008004a3e56ca765375",//
+	name : "LEAN",//
+	lang : "TR-tr",//
+	image : "...",//
+};
 
 var refresh = function () {
-	$http.get('/getDocs').success(function(response){
+	var projectId=$scope.currentProject.id;
+
+	$http.get('/getDocs/'+ projectId).success(function(response){
 		console.log("LOG:GET REQUEST Project Documents Success.");//
 		$scope.docList=response;
 		$scope.doc="";
+		$scope.selectedDoc=null;
 	});
 };
 
 refresh();
 
-	$scope.addDoc = function(){
+$scope.addDoc = function(){
 		console.log($scope.doc);//
+
+		$scope.doc.projectId=$scope.currentProject.id;
+
 		$http.post('/addDoc',$scope.doc).success(function (response) {
 			console.log(response);
 			refresh();
 		});
 	};
 
-	$scope.selectDoc = function(doc){
-		console.log(doc);//	Burdan devam et editleme ve update kısmını yap
-		//ust tarafa edit butonu koy tıklayında inputları how et tıklı değilse sadece contenti bas
+	$scope.selectDoc = function(id){
+		console.log("/getDoc/"+id);//		
+
+		$http.get('/getDoc/'+ id).success(function(response){	
+			$scope.selectedDoc=response;		
+		});		
+	};
+
+	$scope.remove = function(id){
+		console.log("/deleteDoc/"+id);//
+		$http.delete('/deleteDoc/'+id).success(function (response) {
+			refresh();
+		});
+	};
+
+	$scope.save = function(doc){
+		console.log(doc);//
+
+		var id=doc._id;
+
+		$http.put("/updateDoc/"+id,doc).success(function (response){			
+			$scope.selectedDoc=response;
+			refresh();
+		});
 	};
 
 }]);
