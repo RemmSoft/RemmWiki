@@ -40,6 +40,7 @@ $scope.addDoc = function(){
 		console.log("/getDoc/"+id);//		
 
 		$http.get('/getDoc/'+ id).success(function(response){	
+			console.log(response);
 			$scope.selectedDoc=response;		
 		});		
 	};

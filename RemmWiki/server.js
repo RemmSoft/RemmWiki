@@ -1,19 +1,47 @@
 var express = require('express');
+var session = require('express-session');
+var resource = require('express-resource');
+//var mongoStore = require('connect-mongo')(express);
 var mongo = require('mongojs');
+var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('cookie-session');
+var url=require('url');
+
+//////////////////////////////////////// MIDDLEWARE
 
 var app = express();
+
 var _serverPort = 8470;
 var db = mongo('remmWiki',['projectDocs','projects']);
+app.use(express.static(__dirname + '/public'));
+app.set('views',__dirname||'/views');
+app.engine('html', require('ejs').renderFile);
+app.use(bodyParser.json());
+app.use(cookieParser('notsosecretkey'));
+app.use(session({secret: 'notsosecretkey123'}));
 
 //collectionlar yoksa create et
 
-app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.json());
+////////////////////////////////////////// HANDLERS
 
-//-----------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------
+app.get('/',function (req,res){
+});
+
+app.get('/login',function (req,res){
+	res.send("Login");
+
+});
+
+app.get('/main',function (req,res){
+	res.send("Main");
+
+});
+
+function logout(req, res) {
+  req.session = null;
+  return res.json({});
+}
 
 app.get('/getProjects',function (req,res) {
 	console.log("I received a GET request: /getProjects");	
@@ -21,15 +49,11 @@ app.get('/getProjects',function (req,res) {
 	db.projects.find(function(err,docs){
 		if(err!=null){			
 			console.log(err);
-		}else{
+		}else{		
 			res.json(docs);
 		}
 	});
 });
-
-//-----------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------
 
 app.get('/getDocs/:projectId',function (req,res) {
 	console.log("I received a GET request: /getDocs/" + req.params.projectId);	
@@ -50,7 +74,7 @@ app.get('/getDoc/:id',function (req,res) {
 	db.projectDocs.findOne({_id:mongo.ObjectId(id)},function (err,doc) {
 		if(err!=null){			
 			console.log(err);
-		}else{
+		}else{			
 			res.json(doc);
 		}
 	});
@@ -129,37 +153,12 @@ app.put('/updateDoc/:id',function (req,res) {
 			});
 });
 
-//-----------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------
+////////////////////////////////////////// ROUTES
+
+app.get('/logout', logout);
+
+////////////////////////////////////////// SERVER LISTEN
 
 app.listen(_serverPort);
-console.log("Server running on port: " + _serverPort);
+console.log("Server running on:" + _serverPort);
 
-
-/*
-
-//db.projectDocs.insert({id:3,projectId:1,subject:"Sistem Gereksinimleri",docContent:"<h1>Hoş Geldiniz</h1>",parentId:1,createDate:"05.05.2014",createBy:1,updateDate:null,updateBy:null,docVersion:"1",orderIndex:1})
-
-	{
-		_id:xxxx,
-		projectId:1,
-		subject:"Genel",
-		docContent:"<h1>Hoş Geldiniz</h1>",
-		parentId:null,
-		createDate:"05.05.2014",
-		createBy:1,
-		updateDate:null,
-		updateBy:null,
-		docVersion:"1",
-		orderIndex:1
-	}	
-
-	{
-	 name: String,
-    lang: String,
-    isDeleted: Boolean,
-    icon: String
-	}
-
-*/
