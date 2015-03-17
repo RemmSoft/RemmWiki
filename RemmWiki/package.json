@@ -1,7 +1,7 @@
 {
   "name": "RemmWiki",
   "version": "0.1.0",
-  "description": "NodeJS and AngularJS wiki page project.",
+  "description": "REMMSOFT NodeJS and AngularJS wiki page project.",
   "main": "server.js",
   "scripts": {
     "test": "node server.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/RemmDevelop/RemmWiki.git"
+    "url": "https://github.com/RemmSoft/RemmWiki.git"
   },
   "author": "Sevcan ALKAN",
   "license": "ISC",
