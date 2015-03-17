@@ -1,31 +1,31 @@
-var myApp = angular.module('myApp',[]);
+var rsWikiApp = angular.module('rsWikiApp',[]);
 
-myApp.controller('AppController',['$scope','$http',function($scope,$http){
-	console.log("LOG:Angular Controller Running. (AppController)");//
+rsWikiApp.controller('MainController',['$scope','$http',function($scope,$http){
+	console.log("LOG:Angular Controller Running. (MainController)");//
 
 	$scope.docList=null;
 	$scope.selectedDoc=null;
 	$scope.currentProject = {
-	id : "54f3c008004a3e56ca765375",//
-	name : "LEAN",//
-	lang : "TR-tr",//
-	image : "...",//
-};
+		id : "54f3c008004a3e56ca765375",//
+		name : "LEAN",//
+		lang : "TR-tr",//
+		image : "...",//
+	};
 
-var refresh = function () {
+	var refresh = function () {
 	var projectId=$scope.currentProject.id;
 
 	$http.get('/getDocs/'+ projectId).success(function(response){
-		console.log("LOG:GET REQUEST Project Documents Success.");//
-		$scope.docList=response;
-		$scope.doc="";
-		$scope.selectedDoc=null;
-	});
-};
+			console.log("LOG:GET REQUEST Project Documents Success.");//
+			$scope.docList=response;
+			$scope.doc="";
+			$scope.selectedDoc=null;
+		});
+	};
 
-refresh();
+	refresh();
 
-$scope.addDoc = function(){
+	$scope.addDoc = function(){
 		console.log($scope.doc);//
 
 		$scope.doc.projectId=$scope.currentProject.id;
