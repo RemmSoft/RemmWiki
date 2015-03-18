@@ -3,7 +3,7 @@
 <head>
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
-
+<link rel='stylesheet prefetch' href='http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css'>
 	<title>RemmSoft Wiki</title>
 </head>
 <body ng-controller="MainController">
@@ -118,7 +118,8 @@
 				</div>	
 				<div class="row">
 					<div class="col-md-12">
-						<div id="rs-content" ng-model="selectedDoc.docContent" style="margin-top:10px;border-width:1px;border-color:#7f8c8d;border-style:solid;border-radius:3px;padding:2px;height:100%;">							
+						<!--<div ng-model="selectedDoc.docContent" style="margin-top:10px;border-width:1px;border-color:#7f8c8d;border-style:solid;border-radius:3px;padding:2px;height:100%;">-->
+						 <div  id="rs-content" text-angular="text-angular" name="rs-content-editor" ng-model="selectedDoc.docContent" ta-disabled='disabled' style="margin-top:10px;padding:2px;height:100%;"></div>
 						</div>
 					</div>
 				</div>		
@@ -126,8 +127,13 @@
 		</div>
 	</div>
 
-	<script src="../js/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular-sanitize.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular.min.js'></script>
+
+  
+	<script src="../js/jquery-1.11.2.min.js"></script>
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../controllers/controller.js"></script>
 
