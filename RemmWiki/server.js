@@ -160,5 +160,5 @@ app.get('/logout', logout);
 ////////////////////////////////////////// SERVER LISTEN
 
 app.listen(_serverPort);
-console.log("Server running on:" + _serverPort);
+console.log("Server running on port:" + _serverPort);
 
