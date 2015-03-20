@@ -4,15 +4,24 @@
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
 	<link rel='stylesheet' href='../css/font-awesome.min.css'>
+	<link rel="stylesheet" href="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview.css" />
 
 	<title>RemmSoft Wiki Page</title>
+
+	<style type="text/css">
+		.selected {
+			background-color: #aaddff;
+			font-weight: bold;
+		}
+	</style>
+
 </head>
 <body ng-controller="MainController">
 
 	<nav class="navbar navbar-default navbar-static-top">
 		<div class="container">				
 			<div class="navbar-header">		
-			<ul class="nav navbar-nav">      
+				<ul class="nav navbar-nav">      
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-bars"></span></a>
 						<ul class="dropdown-menu" role="menu">							
@@ -37,10 +46,16 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">U Menu <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-						<li><a href="#" id="rs-btn-edit">Edit</a></li>           
+							<li><a href="#" id="rs-btn-edit">Edit</a></li>           
 							<li><a href="#">Logout</a></li>           
 						</ul>
 					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-language"></span>  {{currentLang.name}}</a>
+						<ul class="dropdown-menu" role="menu">							
+							<li role="presentation" ng-repeat="lang in langList" ng-click="selectLang(lang)"><a href="#">{{lang.name}}</a></li>				        
+						</ul>
+					</li>					
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div>
@@ -63,6 +78,12 @@
 					<ul class="nav nav-pills nav-stacked" id="rs-docList">	
 						<li role="presentation" ng-repeat="doc in docList" ng-click="selectDoc(doc._id)"><a href="#">{{doc.subject}}</a></li>				
 					</ul>
+
+					<div ya-treeview-breadcrumbs ya-context="docList"></div>
+					<div ya-treeview ya-id="rs-tree" ya-model="model" ya-options="options" ya-context="docList">
+						<span ng-class="{selected: docContext.selectedNodes.indexOf(node) > -1}">{{ node.$model.label }}</span>
+					</div>
+
 				</div>
 			</div>
 
@@ -118,30 +139,29 @@
 					</div>
 				</div>	
 				<div class="row">
-					<div class="col-md-12">
-						<!--<div ng-model="selectedDoc.docContent" style="margin-top:10px;border-width:1px;border-color:#7f8c8d;border-style:solid;border-radius:3px;padding:2px;height:100%;">-->
-						 <div  id="rs-content" text-angular="text-angular" name="rs-content-editor" ng-model="selectedDoc.docContent" ta-disabled='disabled' style="margin-top:10px;padding:2px;height:100%;"></div>
-						</div>
+					<div class="col-md-12">						
+						<div  id="rs-content" text-angular="text-angular" name="rs-content-editor" ng-model="selectedDoc.docContent" ta-disabled='disabled' style="margin-top:10px;padding:2px;height:100%;"></div>
 					</div>
-				</div>		
-			</div>
+				</div>
+			</div>		
 		</div>
 	</div>
+</div>
 
 
-	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js'></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular-sanitize.min.js'></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular-sanitize.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular.min.js'></script>
+<script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-tpls.js"></script>
+<script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-breadcrumbs-tpls.js"></script>
+<script src="../js/jquery-1.11.2.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../controllers/controller.js"></script>
 
-  
-	<script src="../js/jquery-1.11.2.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
-	<script src="../controllers/controller.js"></script>
-
-	<script type="text/javascript">
-	 $(function(){
+<script type="text/javascript">
+	$(function(){
 	 			//tüm alanları gizle
-	 });
-	</script>
+	 		});
+</script>
 </body>
 </html>

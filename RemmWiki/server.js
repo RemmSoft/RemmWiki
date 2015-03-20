@@ -1,7 +1,7 @@
 var express = require('express');
 var session = require('express-session');
 var resource = require('express-resource');
-//var mongoStore = require('connect-mongo')(express);
+var _ = require('underscore');
 var mongo = require('mongojs');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -13,7 +13,7 @@ var url=require('url');
 var app = express();
 
 var _serverPort = 8470;
-var db = mongo('remmWiki',['projectDocs','projects']);
+var db = mongo('remmWiki',['projectDocs','projects','langs']);
 app.use(express.static(__dirname + '/public'));
 app.set('views',__dirname||'/views');
 app.engine('html', require('ejs').renderFile);
@@ -39,18 +39,34 @@ app.get('/main',function (req,res){
 });
 
 function logout(req, res) {
-  req.session = null;
-  return res.json({});
+	req.session = null;
+	return res.json({});
 }
 
-app.get('/getProjects',function (req,res) {
-	console.log("I received a GET request: /getProjects");	
+app.get('/getLanguages',function (req,res) {
+	console.log("I received a GET request: /getLanguages");	
 
-	db.projects.find(function(err,docs){
+	db.langs.find(function(err,langs){
 		if(err!=null){			
 			console.log(err);
 		}else{		
-			res.json(docs);
+			res.json(langs);
+		}
+	});
+});
+
+app.get('/getProjects/:lang',function (req,res) {
+	console.log("I received a GET request: /getProjects");	
+
+	var lang=req.params.lang;
+
+	console.log(lang);
+
+	db.projects.find({lang:lang},function(err,projects){
+		if(err!=null){			
+			console.log(err);
+		}else{		
+			res.json(projects);
 		}
 	});
 });
@@ -64,9 +80,34 @@ app.get('/getDocs/:projectId',function (req,res) {
 		if(err!=null){			
 			console.log(err);
 		}else{
-			res.json(docs);
-		}
-	});
+			var result = {};
+
+			docs =_.sortBy(docs, function(doc){ return doc.parentId }); 4		
+			docs = _.groupBy(docs, function(doc){ return doc.parentId });				
+
+			var mainDocs=_.find(docs,function(doc){return doc.parentId == null});
+			mainDocs=_.sortBy(mainDocs,function(doc){return doc.orderIndex});
+			var childDocs=_.find(docs,function(doc){return doc.parentId != null});
+
+
+
+			_.each(mainDocs,function(mainDoc){
+				var docChilds = _.find(docChilds,function(doc){return doc.parentId==mainDoc.parentId});
+				docChilds=_.sortBy(docChilds,function(doc){return doc.orderIndex});
+
+					//main docu ekle
+					//childleri ekle
+
+					_.each(docChilds,function(childDoc){	
+
+					});								
+				});
+
+		//	console.log(docs);
+
+		res.json(result);
+	}
+});
 });
 
 app.get('/getDoc/:id',function (req,res) {
@@ -110,10 +151,8 @@ app.post('/addDoc',function (req,res) {
 		}
 	});
 
-	/*
-		parentId
+	/*	
 		createBy,		
-		orderIndex 
 		*/
 	});
 
@@ -129,8 +168,7 @@ app.delete('/deleteDoc/:id',function (req,res) {
 	});
 });
 
-app.put('/updateDoc/:id',function (req,res) {
-	console.log(req.body);	
+app.put('/updateDoc/:id',function (req,res) {	
 
 	var id= req.params.id;
 

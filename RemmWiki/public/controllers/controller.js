@@ -1,10 +1,14 @@
-var rsWikiApp = angular.module('rsWikiApp',['textAngular']);
+var rsWikiApp = angular.module('rsWikiApp',['textAngular','ya.treeview', 'ya.treeview.tpls', 'ya.treeview.breadcrumbs', 'ya.treeview.breadcrumbs.tpls']);
 
 rsWikiApp.controller('MainController',['$scope','$http',function($scope,$http){
 	console.log("LOG:Angular Controller Running. (MainController)");//
 
-	$scope.docList=null;
+	 $scope.docContext = {
+ 		docList:null,
+      	selectedNodes: []
+  	};
 	$scope.projectList=null;
+	$scope.langList=null;
 	$scope.selectedDoc=null;
 	$scope.orightml = '';
 	$scope.htmlcontent = $scope.orightml;
@@ -15,31 +19,69 @@ rsWikiApp.controller('MainController',['$scope','$http',function($scope,$http){
 		lang : "",
 		image : "",
 	};
+	$scope.currentLang = {	
+		name:"TR-tr"
+	};
+	$scope.treeList={
+		options:null
+	};
 
 	var getProjects = function () {
-		$http.get('/getProjects').success(function(response){
+		var lang=$scope.currentLang.name;
+
+		$http.get('/getProjects/'+lang).success(function(response){
 			console.log(response);
 			$scope.projectList=response;
 		});
 	};
 
+	var getLanguages = function () {
+		$http.get('/getLanguages').success(function(response){
+		$scope.langList=response;
+		});
+	};
+
+	var clearScopes = function () {	
+		$scope.doc="";
+		$scope.selectedDoc=null;
+		$scope.orightml = '';
+		$scope.htmlcontent = $scope.orightml;
+		$scope.disabled = false;
+		$scope.docContext.docList=null;				
+	};
+
+	var clearCurrentProject = function () {	
+		$scope.currentProject = {
+			_id : null,
+			name : "RemmSoft",
+			lang : "",
+			image : "",
+		};			
+	};
+
 	var refresh = function () {	
+		clearScopes();
 		var projectId=$scope.currentProject._id;
+
+		console.log(projectId);
 
 		if(projectId!=null){
 			$http.get('/getDocs/'+ projectId).success(function(response){
 				console.log("LOG:GET REQUEST Project Documents Success.");//
-				$scope.docList=response;
-				$scope.doc="";
-				$scope.selectedDoc=null;
-				$scope.orightml = '';
-				$scope.htmlcontent = $scope.orightml;
-				$scope.disabled = false;				
+				$scope.docContext.docList=response;			
 			});
 		}
 	};
 
+	getLanguages();
 	getProjects();
+
+	$scope.selectLang=function(lang){				
+		$scope.currentLang=lang;	
+		clearCurrentProject();
+		getProjects();	
+		refresh();
+	};
 
 	$scope.selectProject=function(project){				
 		$scope.currentProject=project;		
@@ -85,6 +127,21 @@ rsWikiApp.controller('MainController',['$scope','$http',function($scope,$http){
 			refresh();
 		});
 	};
+
+	$scope.treeList.options = {
+      onSelect: function($event, node, context) {
+          if ($event.ctrlKey) {
+              	var idx = context.selectedNodes.indexOf(node);
+	              if (context.selectedNodes.indexOf(node) === -1) {
+	                  context.selectedNodes.push(node);
+	              } else {
+	                  context.selectedNodes.splice(idx, 1);
+	              }
+	          } else {
+	              context.selectedNodes = [node];
+	          }
+      	}
+  	};	 
 
 }]);
 
