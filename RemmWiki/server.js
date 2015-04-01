@@ -6,7 +6,7 @@ var mongo = require('mongojs');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
-var url=require('url');
+var url = require('url');
 
 //////////////////////////////////////// MIDDLEWARE
 
