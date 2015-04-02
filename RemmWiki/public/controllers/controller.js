@@ -1,147 +1,161 @@
-var rsWikiApp = angular.module('rsWikiApp',['textAngular','ya.treeview', 'ya.treeview.tpls', 'ya.treeview.breadcrumbs', 'ya.treeview.breadcrumbs.tpls']);
+'use strict';
 
-rsWikiApp.controller('MainController',['$scope','$http',function($scope,$http){
-	console.log("LOG:Angular Controller Running. (MainController)");//
+var rsWikiApp = angular.module('rsWikiApp', ['textAngular']);
 
-	 $scope.docContext = {
- 		docList:null,
-      	selectedNodes: []
-  	};
-	$scope.projectList=null;
-	$scope.langList=null;
-	$scope.selectedDoc=null;
-	$scope.orightml = '';
-	$scope.htmlcontent = $scope.orightml;
-	$scope.disabled = false;
-	$scope.currentProject = {
-		_id : null,
-		name : "RemmSoft",
-		lang : "",
-		image : "",
-	};
-	$scope.currentLang = {	
-		name:"TR-tr"
-	};
-	$scope.treeList={
-		options:null
-	};
+rsWikiApp.controller('MainController', ['$scope', '$http', function ($scope, $http) {
+        
+        $scope.docList = null;
+        $scope.projectList = null;
+        $scope.selectedDoc = null;
+        $scope.orightml = '';
+        $scope.htmlcontent = $scope.orightml;
+        $scope.disabled = false;
+        $scope.langList = null;
+        $scope.currentLang = null;
+        $scope.currentProject = {
+            _id : null,
+            name : "RemmSoft",
+            description: "",
+            lang : "",
+            image : ""
+        };
+        
+        var getLangs = function () {
+            $http.get('/Lang').success(function (response) {
+                $scope.langList = response;
+                
+                $scope.currentLang = $scope.langList[0];
+                getProjects();
+            });
+        };
+        
+        
+        
+        var getProjects = function () {
+            if ($scope.currentLang == null)
+                return;
+            
+            console.log($scope.currentLang.code);//
+            
+            var lang = $scope.currentLang.code;
+            
+            $http.get('/Project/' + lang).success(function (response) {
+                $scope.projectList = response;
+            });
+        };
+        
+        var refresh = function () {
+            var projectId = $scope.currentProject._id;
+            
+            if (projectId != null) {
+                $http.get('/Docs/' + projectId).success(function (response) {
+                    console.log("LOG:GET REQUEST Project Documents Success.");//
+                    $scope.docList = response;
+                    $scope.doc = "";
+                    $scope.selectedDoc = null;
+                    $scope.orightml = '';
+                    $scope.htmlcontent = $scope.orightml;
+                    $scope.disabled = false;
+                });
+            }
+        };
+        
+        getLangs();        
+        
+        $scope.selectLang = function (lang) {
+            console.log(lang);//
+            $scope.currentLang = lang;
+            getProjects();
+        };
+        
+        $scope.selectProject = function (project) {
+            $scope.currentProject = project;
+            refresh();
+        };
+        
+        $scope.addDoc = function () {
+            console.log($scope.doc);//
+            
+            $scope.doc.projectId = $scope.currentProject._id;
+            
+            $http.post('/Doc', $scope.doc).success(function (response) {
+                console.log(response);
+                refresh();
+            });
+        };
+        
+        $scope.selectDoc = function (id) {
+            console.log("/Doc/" + id);//		
+            
+            $http.get('/Doc/' + id).success(function (response) {
+                console.log(response);
+                $scope.selectedDoc = response;
+                $scope.orightml = response.docContent;
+                $scope.htmlcontent = $scope.orightml;
+            });
+        };
+        
+        $scope.remove = function (id) {
+            console.log("/Doc/" + id);//
+            $http.delete('/Doc/' + id).success(function (response) {
+                refresh();
+            });
+        };
+        
+        $scope.save = function (doc) {
+            console.log(doc);//
+            
+            var id = doc._id;
+            
+            $http.put("/Doc/" + id, doc).success(function (response) {
+                $scope.selectedDoc = response;
+                refresh();
+            });
+        };
+        
+        rsWikiApp.directive("rsTreeList", function () {
+            var directive = {};
+            directive.restrict = "E";//
+            directive.scope = {
+                _doc : $scope.docList
+            }
+            
+            directive.template = "";
+            
+            var docs = $scope.docList;
+            var masterRecs = null;
+            var childRecs = null;
+            
+            masterRecs = docs.find({ parentId: null }, function (doc) {
+                return doc;
+            });
+            
+            masterRecs.each(function (doc) {
+                listItems(doc);
+            });
+            
+            function listItems(doc) {
+                childRecs = docs.find({ parentId: doc.parentId }, function (doc) {
+                    return doc;
+                });
+                                
+                directive.template += "<li><label class='tree-toggler nav-header '></label>";
+                directive.template += "<ul class=' nav nav-list tree'>";
 
-	var getProjects = function () {
-		var lang=$scope.currentLang.name;
+                childRecs.each(function (cDoc) { 
+                    directive.template += "<li><a href='#'>Link</a></li>";
 
-		$http.get('/getProjects/'+lang).success(function(response){
-			console.log(response);
-			$scope.projectList=response;
-		});
-	};
+                    listItems(cDoc);
+                });
+                
+                directive.template += "</ul>";
+                directive.template += "</li>";
 
-	var getLanguages = function () {
-		$http.get('/getLanguages').success(function(response){
-		$scope.langList=response;
-		});
-	};
+                childRecs = null; 
+            }
+            
+            return directive;
+        });
 
-	var clearScopes = function () {	
-		$scope.doc="";
-		$scope.selectedDoc=null;
-		$scope.orightml = '';
-		$scope.htmlcontent = $scope.orightml;
-		$scope.disabled = false;
-		$scope.docContext.docList=null;				
-	};
-
-	var clearCurrentProject = function () {	
-		$scope.currentProject = {
-			_id : null,
-			name : "RemmSoft",
-			lang : "",
-			image : "",
-		};			
-	};
-
-	var refresh = function () {	
-		clearScopes();
-		var projectId=$scope.currentProject._id;
-
-		console.log(projectId);
-
-		if(projectId!=null){
-			$http.get('/getDocs/'+ projectId).success(function(response){
-				console.log("LOG:GET REQUEST Project Documents Success.");//
-				$scope.docContext.docList=response;			
-			});
-		}
-	};
-
-	getLanguages();
-	getProjects();
-
-	$scope.selectLang=function(lang){				
-		$scope.currentLang=lang;	
-		clearCurrentProject();
-		getProjects();	
-		refresh();
-	};
-
-	$scope.selectProject=function(project){				
-		$scope.currentProject=project;		
-		refresh();		
-	};
-	
-	$scope.addDoc = function(){
-		console.log($scope.doc);//
-
-		$scope.doc.projectId=$scope.currentProject._id;
-
-		$http.post('/addDoc',$scope.doc).success(function (response) {
-			console.log(response);
-			refresh();
-		});
-	};
-
-	$scope.selectDoc = function(id){
-		console.log("/getDoc/"+id);//		
-
-		$http.get('/getDoc/'+ id).success(function(response){	
-			console.log(response);
-			$scope.selectedDoc=response;	
-			$scope.orightml = response.docContent;
-			$scope.htmlcontent = $scope.orightml;			
-		});		
-	};
-
-	$scope.remove = function(id){
-		console.log("/deleteDoc/"+id);//
-		$http.delete('/deleteDoc/'+id).success(function (response) {
-			refresh();
-		});
-	};
-
-	$scope.save = function(doc){
-		console.log(doc);//
-
-		var id=doc._id;
-
-		$http.put("/updateDoc/"+id,doc).success(function (response){			
-			$scope.selectedDoc=response;
-			refresh();
-		});
-	};
-
-	$scope.treeList.options = {
-      onSelect: function($event, node, context) {
-          if ($event.ctrlKey) {
-              	var idx = context.selectedNodes.indexOf(node);
-	              if (context.selectedNodes.indexOf(node) === -1) {
-	                  context.selectedNodes.push(node);
-	              } else {
-	                  context.selectedNodes.splice(idx, 1);
-	              }
-	          } else {
-	              context.selectedNodes = [node];
-	          }
-      	}
-  	};	 
-
-}]);
+    }]);
 

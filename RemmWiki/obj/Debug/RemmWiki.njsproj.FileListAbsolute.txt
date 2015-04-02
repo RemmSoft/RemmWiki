@@ -1,0 +1,4 @@
+c:\users\sevcan\documents\visual studio 2013\Projects\RemmWiki\RemmWiki\obj\Debug\RemmWiki.njsprojResolveAssemblyReference.cache
+c:\users\sevcan\documents\visual studio 2013\Projects\RemmWiki\RemmWiki\bin\Microsoft.NodejsTools.WebRole.dll
+C:\WORK\RemmWiki\RemmWiki\obj\Debug\RemmWiki.njsprojResolveAssemblyReference.cache
+C:\WORK\RemmWiki\RemmWiki\bin\Microsoft.NodejsTools.WebRole.dll
