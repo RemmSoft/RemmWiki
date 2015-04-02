@@ -1,0 +1,2 @@
+start "" "C:\Program Files\MongoDB\Server\3.0\bin\mongod" --dbpath C:\WORK\RemmWiki\MongoDB\DB --logpath C:\WORK\RemmWiki\MongoDB\Logs\mongo.log
+start "" "C:\Program Files\MongoDB\Server\3.0\bin\mongo"
