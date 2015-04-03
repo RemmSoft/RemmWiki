@@ -38,9 +38,11 @@
     <Compile Include="public\js\npm.js" />
     <Compile Include="public\js\textAngular-sanitize.js" />
     <Compile Include="public\js\textAngular.js" />
+    <Compile Include="public\js\TreeList.js" />
     <Compile Include="server.js" />
     <Content Include="package.json" />
     <Content Include="public\About.html" />
+    <Content Include="public\AdminPanel.html" />
     <Content Include="public\css\bootstrap-theme.css" />
     <Content Include="public\css\bootstrap-theme.css.map" />
     <Content Include="public\css\bootstrap-theme.min.css" />
@@ -49,6 +51,7 @@
     <Content Include="public\css\bootstrap.min.css" />
     <Content Include="public\css\font-awesome.min.css" />
     <Content Include="public\css\textAngular.css" />
+    <Content Include="public\css\TreeList.css" />
     <Content Include="public\fonts\fontawesome-webfont.eot" />
     <Content Include="public\fonts\fontawesome-webfont.svg" />
     <Content Include="public\fonts\fontawesome-webfont.ttf" />
@@ -62,6 +65,7 @@
     <Content Include="public\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="public\Index.html" />
     <Content Include="public\Login.html" />
+    <Content Include="public\rsTreeListTemplate.html" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>

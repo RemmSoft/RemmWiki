@@ -4,6 +4,7 @@ var rsWikiApp = angular.module('rsWikiApp', ['textAngular']);
 
 rsWikiApp.controller('MainController', ['$scope', '$http', function ($scope, $http) {
         
+        $scope.appVersion = "1";
         $scope.docList = null;
         $scope.projectList = null;
         $scope.selectedDoc = null;
@@ -60,7 +61,7 @@ rsWikiApp.controller('MainController', ['$scope', '$http', function ($scope, $ht
             }
         };
         
-        getLangs();        
+        getLangs();
         
         $scope.selectLang = function (lang) {
             console.log(lang);//
@@ -112,50 +113,35 @@ rsWikiApp.controller('MainController', ['$scope', '$http', function ($scope, $ht
                 refresh();
             });
         };
-        
-        rsWikiApp.directive("rsTreeList", function () {
-            var directive = {};
-            directive.restrict = "E";//
-            directive.scope = {
-                _doc : $scope.docList
-            }
-            
-            directive.template = "";
-            
-            var docs = $scope.docList;
-            var masterRecs = null;
-            var childRecs = null;
-            
-            masterRecs = docs.find({ parentId: null }, function (doc) {
-                return doc;
-            });
-            
-            masterRecs.each(function (doc) {
-                listItems(doc);
-            });
-            
-            function listItems(doc) {
-                childRecs = docs.find({ parentId: doc.parentId }, function (doc) {
-                    return doc;
-                });
-                                
-                directive.template += "<li><label class='tree-toggler nav-header '></label>";
-                directive.template += "<ul class=' nav nav-list tree'>";
-
-                childRecs.each(function (cDoc) { 
-                    directive.template += "<li><a href='#'>Link</a></li>";
-
-                    listItems(cDoc);
-                });
-                
-                directive.template += "</ul>";
-                directive.template += "</li>";
-
-                childRecs = null; 
-            }
-            
-            return directive;
-        });
-
+      
+       
     }]);
 
+
+//rsWikiApp.directive("rsTreeList", function () {
+//    var directive = {};
+//    directive.restrict = "E";//
+//    directive.scope = {
+//        docList : "=docList"
+//    };
+
+//    directive.templateUrl = "rsTreeListTemplate.html";     
+
+//    return directive;
+//});
+
+
+rsWikiApp.directive("rsTreeList", function () {
+    return {
+        restrict: "E",
+        scope: {
+            docs : "=",
+            selectDoc : "&"
+        }, 
+        templateUrl: "rsTreeListTemplate.html",
+        link: function (scope, elm, attrs) {
+            $(elm).treed();
+        }
+    }
+    
+});

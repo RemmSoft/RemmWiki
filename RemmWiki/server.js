@@ -28,6 +28,11 @@ app.route('/')
     .get(function (req, res) {
 });
 
+app.route('/AdminPanel')
+    .get(function (req, res) {
+    res.send("AdminPanel");
+});
+
 app.route('/Login')
     .get(function (req, res) {
     res.send("Login");
@@ -44,7 +49,7 @@ app.route('/About')
 });
 
 app.get('/Lang', function (req, res) {
-    console.log("I received a GET request: /Lang");//
+    //console.log("I received a GET request: /Lang");//
     
     db.Lang.find(function (err, docs) {
         if (err != null) {
@@ -56,7 +61,7 @@ app.get('/Lang', function (req, res) {
 });
 
 app.get('/Project/:lang', function (req, res) {
-    console.log("I received a GET request: /Project/"+ req.params.lang);
+//    console.log("I received a GET request: /Project/"+ req.params.lang);
     
     var lang = req.params.lang;
     db.Project.find({ lang: lang }, function (err, projects) {
@@ -74,7 +79,7 @@ app.post('/Project', function (req, res) {
 });
 
 app.get('/Docs/:projectId', function (req, res) {
-    console.log("I received a GET request: /getDocs/" + req.params.projectId);
+//    console.log("I received a GET request: /getDocs/" + req.params.projectId);
     
     var projectId = req.params.projectId;
     
