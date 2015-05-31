@@ -1,0 +1,15 @@
+﻿
+<script type="text/ng-template" id="rstree-template">
+    <a ng-click="selectDoc({id: doc._id})" href="#">{{doc.subject}}</a>
+
+    <ul>
+        <li ng-repeat="doc in docs | filter:{ parentId: doc._id }" ng-include="'rstree-template'"></li>
+    </ul>
+
+</script>
+
+
+<ul id="treeListHead">   
+    <li ng-repeat="doc in docs | filter:{ parentId: null }" ng-include="'rstree-template'"></li>
+</ul>
+    

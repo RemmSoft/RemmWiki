@@ -1,156 +1,185 @@
 var express = require('express');
 var session = require('express-session');
 var resource = require('express-resource');
-//var mongoStore = require('connect-mongo')(express);
 var mongo = require('mongojs');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
-var url=require('url');
+var url = require('url');
 
 //////////////////////////////////////// MIDDLEWARE
 
 var app = express();
 
 var _serverPort = 8470;
-var db = mongo('remmWiki',['projectDocs','projects']);
+var db = mongo('RSWiki', ['Document', 'Project', 'Lang']);
 app.use(express.static(__dirname + '/public'));
-app.set('views',__dirname||'/views');
+app.set('views', __dirname || '/views');//gereksiz olabilir veya express routingi düzenle.
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
-app.use(cookieParser('notsosecretkey'));
-app.use(session({secret: 'notsosecretkey123'}));
+app.use(cookieParser('notsosecretkey'));//
+app.use(session({ secret: 'notsosecretkey123' }));//
 
-//collectionlar yoksa create et
+//DB'yi kontrol et yoksa olu?tur.
 
 ////////////////////////////////////////// HANDLERS
 
-app.get('/',function (req,res){
+app.route('/')
+    .get(function (req, res) {
 });
 
-app.get('/login',function (req,res){
-	res.send("Login");
-
+app.route('/AdminPanel')
+    .get(function (req, res) {
+    res.send("AdminPanel");
 });
 
-app.get('/main',function (req,res){
-	res.send("Main");
-
+app.route('/Login')
+    .get(function (req, res) {
+    res.send("Login");
 });
 
-function logout(req, res) {
-  req.session = null;
-  return res.json({});
-}
-
-app.get('/getProjects',function (req,res) {
-	console.log("I received a GET request: /getProjects");	
-
-	db.projects.find(function(err,docs){
-		if(err!=null){			
-			console.log(err);
-		}else{		
-			res.json(docs);
-		}
-	});
+app.route('/Main')
+    .get(function (req, res) {
+    res.send("Main");
 });
 
-app.get('/getDocs/:projectId',function (req,res) {
-	console.log("I received a GET request: /getDocs/" + req.params.projectId);	
-
-	var projectId=req.params.projectId;
-
-	db.projectDocs.find({projectId:mongo.ObjectId(projectId)},function(err,docs){			
-		if(err!=null){			
-			console.log(err);
-		}else{
-			res.json(docs);
-		}
-	});
+app.route('/About')
+    .get(function (req, res) {
+    res.send("About");
 });
 
-app.get('/getDoc/:id',function (req,res) {
-	var id= req.params.id;	
-	db.projectDocs.findOne({_id:mongo.ObjectId(id)},function (err,doc) {
-		if(err!=null){			
-			console.log(err);
-		}else{			
-			res.json(doc);
-		}
-	});
+app.get('/Lang', function (req, res) {
+    //console.log("I received a GET request: /Lang");//
+    
+    db.Lang.find(function (err, docs) {
+        if (err != null) {
+            console.log(err);
+        } else {
+            res.json(docs);
+        }
+    });
 });
 
-app.post('/addDoc',function (req,res) {
-	console.log("I received a POST request: /addDoc");	
+app.get('/Project/:lang', function (req, res) {
+//    console.log("I received a GET request: /Project/"+ req.params.lang);
+    
+    var lang = req.params.lang;
+    db.Project.find({ lang: lang }, function (err, projects) {
+        if (err != null) {
+            console.log(err);
+        } else {            
+            res.json(projects);
+        }
+    });
+});
 
-	var _subject=req.body.subject;
-	var _createDate=new Date();
-	var _projectId=mongo.ObjectId(req.body.projectId);
+app.post('/Project', function (req, res) {
+    console.log("I received a POST request: /Project");//
+    //Proje ekleme
+});
 
-	var result = [];
-	result.push({
-		docContent:"",
-		parentId:null,
-		projectId:_projectId,
-		subject:_subject, 
-		createDate:_createDate,
-		createBy:null,
-		updateDate:null,
-		updateBy:null,
-		docVersion:0,
-		orderIndex:1
-	});
+app.get('/Docs/:projectId', function (req, res) {
+//    console.log("I received a GET request: /getDocs/" + req.params.projectId);
+    
+    var projectId = req.params.projectId;
+    
+    db.Document.find({ projectId: mongo.ObjectId(projectId) }, function (err, docs) {
+        if (err != null) {
+            console.log(err);
+        } else {
+            res.json(docs);//select ile contenti bo? gönder.
+        }
+    });
+});
 
-	//console.log(JSON.stringify(result));	
-	db.projectDocs.insert(result,function(err,doc){
-		if(err!=null){			
-			console.log(err);
-		}else{
-			res.json(doc);
-		}
-	});
+app.get('/Doc/:id', function (req, res) {
+    var id = req.params.id;
+    db.Document.findOne({ _id: mongo.ObjectId(id) }, function (err, doc) {
+        if (err != null) {
+            console.log(err);
+        } else {
+            res.json(doc);
+        }
+    });
+});
+
+app.post('/Doc', function (req, res) {
+    console.log("I received a POST request: /addDoc");
+    
+    var _subject = req.body.subject;
+    var _createDate = new Date();
+    var _projectId = mongo.ObjectId(req.body.projectId);
+    
+    var result = [];
+    result.push({
+        docContent: "",
+        parentId: null,
+        projectId: _projectId,
+        subject: _subject, 
+        createDate: _createDate,
+        createBy: null,
+        updateDate: null,
+        updateBy: null,
+        docVersion: 0,
+        orderIndex: 1
+    });
+    
+    //console.log(JSON.stringify(result));	
+    db.Document.insert(result, function (err, doc) {
+        if (err != null) {
+            console.log(err);
+        } else {
+            res.json(doc);
+        }
+    });
 
 	/*
 		parentId
 		createBy,		
 		orderIndex 
 		*/
-	});
-
-app.delete('/deleteDoc/:id',function (req,res) {
-	var id= req.params.id;
-	
-	db.projectDocs.remove({_id:mongo.ObjectId(id)},function (err,doc) {
-		if(err!=null){			
-			console.log(err);
-		}else{
-			res.json(doc);
-		}
-	});
 });
 
-app.put('/updateDoc/:id',function (req,res) {
-	console.log(req.body);	
+app.delete('/Doc/:id', function (req, res) {
+    var id = req.params.id;
+    
+    db.Document.remove({ _id: mongo.ObjectId(id) }, function (err, doc) {
+        if (err != null) {
+            console.log(err);
+        } else {
+            res.json(doc);
+        }
+    });
+});
 
-	var id= req.params.id;
-
-	db.projectDocs.findAndModify({query: {_id: mongo.ObjectId(id)},
-		update: {$set: { docContent:req.body.docContent,
-			parentId:mongo.ObjectId(req.body.parentId),
-			subject:req.body.subject,
-			createDate:req.body.createDate,
-			createBy:req.body.createBy,
-			updateDate:req.body.updateDate,
-			updateBy:req.body.updateBy,
-			docVersion:req.body.docVersion,
-			orderIndex:req.body.orderIndex}},
-			new: true}, function (err,doc) {				
-				if(err!=null){			
-					console.log(err);
-				}else{
-					res.json(doc);
-				}
-			});
+app.put('/Doc/:id', function (req, res) {
+    console.log(req.body);
+    
+    var id = req.params.id;
+    
+    db.Document.findAndModify({
+        query: { _id: mongo.ObjectId(id) },
+        update: {
+            $set: {
+                docContent: req.body.docContent,
+                parentId: mongo.ObjectId(req.body.parentId),
+                subject: req.body.subject,
+                createDate: req.body.createDate,
+                createBy: req.body.createBy,
+                updateDate: req.body.updateDate,
+                updateBy: req.body.updateBy,
+                docVersion: req.body.docVersion,
+                orderIndex: req.body.orderIndex
+            }
+        },
+        new: true
+    }, function (err, doc) {
+        if (err != null) {
+            console.log(err);
+        } else {
+            res.json(doc);
+        }
+    });
 });
 
 ////////////////////////////////////////// ROUTES
@@ -160,5 +189,12 @@ app.get('/logout', logout);
 ////////////////////////////////////////// SERVER LISTEN
 
 app.listen(_serverPort);
-console.log("Server running on:" + _serverPort);
+console.log("Server running on port:" + _serverPort);
+
+///////////////////////////////////////// FUNCTIONS
+
+function logout(req, res) {
+    req.session = null;
+    return res.json({});
+}
 

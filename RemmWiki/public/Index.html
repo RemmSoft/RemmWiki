@@ -1,140 +1,153 @@
 <!DOCTYPE>
 <html ng-app="rsWikiApp">
-<head>
-	<link rel="stylesheet" href="../css/bootstrap.min.css">
-	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
 
-	<title>RemmSoft Wiki</title>
+
+<head>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+    <link rel='stylesheet' href='../css/font-awesome.min.css'>
+    <link rel="stylesheet" href="../css/TreeList.css" />
+
+    <title>RemmSoft Wiki Page</title>
+ 
 </head>
 <body ng-controller="MainController">
 
-	<nav class="navbar navbar-default navbar-static-top">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">
-					<img ng-src="{{currentProject.image}}" alt="{{currentProject.name}} Wiki">
-				</a>
-			</div>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle fa fa-bars" data-toggle="dropdown" role="button" aria-expanded="false"><span class=""></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation" ng-repeat="project in projectList" ng-click="selectProject(project)"><a href="#">{{project.name}}</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <a class="navbar-brand" href="#">
+                    <img ng-src="{{currentProject.image}}" alt="{{currentProject.name}} Wiki">
+                </a>
+            </div>
 
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">      
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Action</a></li>          
-						</ul>
-					</li>
-				</ul>
-				<form class="navbar-form navbar-left" role="search">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="">
-					</div>
-					<button type="submit" class="btn btn-default">Ara</button>
-				</form>
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">USERNAME</a></li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">U Menu <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-						<li><a href="#" id="rs-btn-edit">Edit</a></li>           
-							<li><a href="#">Logout</a></li>           
-						</ul>
-					</li>
-				</ul>
-			</div><!-- /.navbar-collapse -->
-		</div>
-	</nav>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse">
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="">
+                    </div>
+                    <button type="submit" class="btn btn-default">Ara</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">USERNAME</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">U Menu <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" id="rs-btn-edit">Edit</a></li>
+                            <li><a href="#">Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" ng-model="currentLang" value="{{currentLang}}" class="dropdown-toggle fa fa-language" data-toggle="dropdown" role="button" aria-expanded="false"> {{currentLang.code}}</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" ng-repeat="lang in langList" ng-click="selectLang(lang)">{{lang.name}} - {{lang.code}}</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
 
-	<div class="conteiner" style="margin-left:8px;margin-right:8px;">
-		<div class="row">
-			<div class="col-md-2">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="input-group  input-group-sm">
-							<input type="text" class="form-control " ng-model="doc.subject" placeholder="Yeni Döküman...">
-							<span class="input-group-btn">
-								<button class="btn btn-default btn-primary" type="button" ng-click="addDoc()">Ekle</button>
-							</span>
-						</div><!-- /input-group -->
-					</div><!-- /.col-lg-12 -->	
-				</div>
-				<div class="row">
-					<ul class="nav nav-pills nav-stacked" id="rs-docList">	
-						<li role="presentation" ng-repeat="doc in docList" ng-click="selectDoc(doc._id)"><a href="#">{{doc.subject}}</a></li>				
-					</ul>
-				</div>
-			</div>
+    <div class="conteiner" style="margin-left:8px;margin-right:8px;">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="input-group  input-group-sm">
+                            <input type="text" class="form-control " ng-model="doc.subject" placeholder="Yeni Döküman...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-primary" type="button" ng-click="addDoc()">Ekle</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-12 -->
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="max-height:500px; overflow-y:scroll;">                     
+                        <rs-tree-list docs="docList" select-doc="selectDoc(id)" id="rs-treelist"> </rs-tree-list>
+                    </div>
+                </div>
+            </div>
 
-			<div class="col-md-10">		
-				<div class="row">
-					<div class="col-md-12">
-						<div class="row">					
-							<button class="btn btn-info btn-sm" ng-click="save(selectedDoc)">Kaydet</button>
-							<button class="btn btn-danger  btn-sm" ng-click="remove(selectedDoc._id)">Sil</button>
-						</div>
-						<hr/>
-						<div class="row">
-							<div class="col-md-12">
-								<label> ID: {{selectedDoc._id}} </label>
-							</div>
-							<div class="col-md-6">							
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="sizing-addon-subject">Subject</span>
-									<input type="text" class="form-control" placeholder="Subject" aria-describedby="sizing-addon-subject" ng-model="selectedDoc.subject">
-								</div>
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="sizing-addon-parentId">Parent Id</span>
-									<input type="text" class="form-control" placeholder="Parent Id" aria-describedby="sizing-addon-parentId" ng-model="selectedDoc.parentId">
-								</div>			
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="sizing-addon-docVersion">Document Ver</span>
-									<input type="text" class="form-control" placeholder="Document Version" aria-describedby="sizing-addon-docVersion" ng-model="selectedDoc.docVersion">
-								</div>
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="sizing-addon-orderIndex">Order Index</span>
-									<input type="number" class="form-control" placeholder="Order Index" aria-describedby="sizing-addon-orderIndex" ng-model="selectedDoc.orderIndex">
-								</div>
-							</div>
-							<div class="col-md-6">																
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="sizing-addon-createDate">Create Date</span>
-									<input type="text" class="form-control" placeholder="Create Date" aria-describedby="sizing-addon-createDate" ng-model="selectedDoc.createDate">
-								</div>
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="sizing-addon-createBy">Create By</span>
-									<input type="number" class="form-control" placeholder="Create By" aria-describedby="sizing-addon-createBy" ng-model="selectedDoc.createBy">
-								</div>
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="sizing-addon-updateDate">Update Date</span>
-									<input type="text" class="form-control" placeholder="Update Date" aria-describedby="sizing-addon-updateDate" ng-model="selectedDoc.updateDate">
-								</div>
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="sizing-addon-updateBy">Update By</span>
-									<input type="number" class="form-control" placeholder="Update By" aria-describedby="sizing-addon-updateBy" ng-model="selectedDoc.updateBy">
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>	
-				<div class="row">
-					<div class="col-md-12">
-						<div id="rs-content" ng-model="selectedDoc.docContent" style="margin-top:10px;border-width:1px;border-color:#7f8c8d;border-style:solid;border-radius:3px;padding:2px;height:100%;">							
-						</div>
-					</div>
-				</div>		
-			</div>
-		</div>
-	</div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <button class="btn btn-info btn-sm" ng-click="save(selectedDoc)">Kaydet</button>
+                            <button class="btn btn-danger  btn-sm" ng-click="remove(selectedDoc._id)">Sil</button>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label> ID: {{selectedDoc._id}} </label>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon" id="sizing-addon-subject">Subject</span>
+                                    <input type="text" class="form-control" placeholder="Subject" aria-describedby="sizing-addon-subject" ng-model="selectedDoc.subject">
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon" id="sizing-addon-parentId">Parent Id</span>
+                                    <input type="text" class="form-control" placeholder="Parent Id" aria-describedby="sizing-addon-parentId" ng-model="selectedDoc.parentId">
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon" id="sizing-addon-docVersion">Document Ver</span>
+                                    <input type="text" class="form-control" placeholder="Document Version" aria-describedby="sizing-addon-docVersion" ng-model="selectedDoc.docVersion">
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon" id="sizing-addon-orderIndex">Order Index</span>
+                                    <input type="number" class="form-control" placeholder="Order Index" aria-describedby="sizing-addon-orderIndex" ng-model="selectedDoc.orderIndex">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon" id="sizing-addon-createDate">Create Date</span>
+                                    <input type="text" class="form-control" placeholder="Create Date" aria-describedby="sizing-addon-createDate" ng-model="selectedDoc.createDate">
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon" id="sizing-addon-createBy">Create By</span>
+                                    <input type="number" class="form-control" placeholder="Create By" aria-describedby="sizing-addon-createBy" ng-model="selectedDoc.createBy">
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon" id="sizing-addon-updateDate">Update Date</span>
+                                    <input type="text" class="form-control" placeholder="Update Date" aria-describedby="sizing-addon-updateDate" ng-model="selectedDoc.updateDate">
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon" id="sizing-addon-updateBy">Update By</span>
+                                    <input type="number" class="form-control" placeholder="Update By" aria-describedby="sizing-addon-updateBy" ng-model="selectedDoc.updateBy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--<div ng-model="selectedDoc.docContent" style="margin-top:10px;border-width:1px;border-color:#7f8c8d;border-style:solid;border-radius:3px;padding:2px;height:100%;">-->
+                        <div id="rs-content" text-angular="text-angular" name="rs-content-editor" ng-model="selectedDoc.docContent" ta-disabled='disabled' style="margin-top:10px;padding:2px;height:100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
-	<script src="../js/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
-	<script src="../controllers/controller.js"></script>
 
-	<script type="text/javascript">
-	 $(function(){
-	 			//tüm alanları gizle
-	 });
-	</script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular-sanitize.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular.min.js'></script>
+
+
+    <script src="../js/jquery-1.11.2.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../controllers/controller.js"></script>
+    <script src="../js/TreeList.js"></script>
+
 </body>
 </html>

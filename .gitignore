@@ -1,1 +1,4 @@
 RemmWiki/node_modules/
+RemmWiki/.ntvs_analysis.dat
+*.suo
+*.tmp
