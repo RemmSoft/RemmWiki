@@ -1,0 +1,62 @@
+     Öncelikle NodeJS nedir bundan başlıyalım. NodeJS Chrome da kullanılan V8 Engine üzerinde inşa edilmiş bir platformdur. NodeJS Event-Driven,Non-Blocking O/I yapısı ile ölçeklenebilir ve performanslı uygulamalar geliştirmek mümkündür.
+   
+     NodeJS serverına düşen her Request bir dögüye alınıp arka tarafta çalışan bir Workera atanır, böylece sunucu bir isteğin tamamlanmasını  beklemeden diğer isteğe geçer. Workerın işi bittiğinde tekrar Event Loop'a döner. (Resim 1) 
+
+    NodeJS IIS,Tomcat,WebLogic gibi kompleks sunuculara kıyasla çok daha az kaynak tüketir.
+NodeJS de hazır bir sunucumuz yoktur, Web Sunucuyu da biz yazarız. Beş satırda basit bir Web Sunucusu yazmak mümkün. NodeJS ile basit bir sunucudan öte gelişmiş sunucular da yazmak mümkün, NodeJS moduler bir yapısı vardır. .Net kullananların alışkın olduğu NuGet gibi NodeJS için de NPM(Node Package Manager) vardır. Sunucumuza gerekli paketleri NPM ile kurar ve yönetiriz detayına sonra giricez.   
+   
+    Şimdi kuruluma geçelim :)
+
+Windows kullananlar bu linketen: https://nodejs.org/ direk Windows için Setup'ı indirip kurabilirler. NPM de kurulacaktır.
+
+Linux(Debian/Ubuntu) kullananlar sırasıyla aşağıdaki komutları çalıştırsınlar;
+   sudo apt-get update
+   sudo apt-get install nodejs
+   sudo apt-get install npm
+
+Editor olarak Visual Studio Code kullanabilirsiniz, indirmek için: https://code.visualstudio.com/download
+
+   Hemen uygun bir yerde klasör oluşturup ilk sunucumuzu yazalım :) 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var http=require('http');
+var serverPort=8182;
+
+http.createServer(function(req,res){
+  res.writeHead(200,{'content-Type':'text/plain'});
+  res.end('Hello World');
+}).listen(serverPort,'127.0.0.1');
+
+console.log("Server runing at http://127.0.0.1:"+8182+"/");
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+1. Klasörümüzün içine server.js adında yeni bir dosya oluşturup, dosyamızı açıyoruz.
+
+2. ilk olarak NodeJS sunucumuz için gerekli modullerimizi eklememiz gerekmekte. Bunun için ilk satıra "var http=require('http');" yazarak. "http" modulünü http adlı değişkenimize atıyoruz. Basit bir Http sunucusu yazmamız için bu bize gerekli. İlerde daha farklı modüller ekliyerek daha gelişmiş sunucular yazıcaz.
+
+3.Ben sunucumuzun çalışacağı portu bir değişkene atmayı seçtim. 
+Bunun için "var serverPort=8182;" yazıyoruz.
+
+4. "http.createServer" komutu ile http değişkenmizi kullanarak bir sunucu oluşturuyoruz. CreateServer fonksiyonu parametre olarak yine bir fonksiyon gönderiyoruz. Bu fonksiyon bizim sunucumuza gelen istekleri(Request) dinliyecek. Bunun farklı yazımlarıda mevcut ancak şuanlık bu yeterli. 
+
+    Gönderdiğimiz fonksiyonda iki tane parametremiz mevcut, bunlar "req" ve "res" NodeJS te herzaman ilk parametreye Request yani kullanıcıdan gelen istek atanır, ikinci parametreyede Response yani bizim kullanıcıdan gelen isteğe(Request) karşı döndürdüğümüz cevap atanır.
+
+    Biz res(Response) değişkenini kullanarak, ilk önce geriye döndüreceğimiz yanıtın türünü belirtiyoruz: "res.writeHead(200,{'content-Type':'text/plain'});". Burda ilk yazdığımı "200" kodu Http.Status kodudur, genelde gördüğümüz 404 hata kodu gibi. 200 kodu işlemin başarılı olduğunu  berirtir. Diğer Http Kodları:http://tr.wikipedia.org/wiki/HTTP_durum_kodlar%C4%B1
+    ikinci parametremiz ise geriye döndürdüğümüz içeriğin türünü berirtmekte. 
+"{'content-Type':'text/plain'}" içeriğimizin yazıdan oluşmakta olduğunu berirtiyoruz.
+Daha fazla içerik türü için:http://en.wikipedia.org/wiki/Internet_media_type bakabilirsiniz.
+
+   Son olarakta "res.end()" ile yanıt döndürme işlemini tamalıyoruz. End() fonksiyonuna attığımız parametreyi "body" elementinin içine basıyor.
+
+5. "Listen" fonksiyonu na iki tane parametre gönderdik, bunların ilki sunucumuzun çalışacağı portu berirtirken ikinci parametremiz ise sunucumuzun IP adresini berirtmekte. Ben local IP adresini yani "127.0.0.1" attım. 
+
+CreateServer fonksiyonu hakkında daha fazla bilgi için:https://nodejs.org/api/http.html#http_class_http_server dökümanını inceleyebilirsiniz.
+
+6. Yani son satır ise Konsolda çalıştırdığımızda bize sunucumuzun çalıştığı IP adresi ve Portu göstermesi için bilgilendirme :) 
+
+   Sıra geldi basit sunucumuzu çalıştırmaya. Çalıştırmak için server.js dosyamızın blunduğu dizini Komut satırı ile açıyoruz. Ardından "node server.js" komutu ile çalıştırıyoruz. Eğer en yazdığımız "console.log" satırı dışında bir hata mesajı ile karşılaşmadı iseniz. Sunucumuz başarı ile çalışmıştır.
+
+   Test için hemen tarayıcımızı açıp adres çubuğuna "127.0.0.1:8182" yazıp Enter'a basıyoruz, ekranda bizi "Hello Word" yazısı bizi karşılıyor :) İlk adımı böylece başarı ile tamamlayıp. Basit bir Http sunucusu yazdık.
+
+Bu örnekte ek bir modül,bir view engine kullanmadan(http hariç  :) ) basit bir sunucu oluşturmayı elimden geldiğince anlatmaya çalıştım. İlerde View Engine kullanarak bir Wiki projesi yazıcam. AngularJS,ExpressJS/TotalJS,Mongosee(MongoDB) kullanıcaz. Umarım anaşılır olmuştur. Sorularınız olursa yazarsınız elımden geldiğince yanıtlamaya çalışırım :)
+  
