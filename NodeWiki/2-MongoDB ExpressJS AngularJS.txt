@@ -1,0 +1,59 @@
+	Tekrar merhaba arkadaşlar ilk yazım NodeJS Kurulum & Hello World'ün(http://teknoseyir.com/inceleme/nodejs-kurulum-hello-world) 
+ardından bu yazımda alt yapının hazırlanması ve temel modullerin kurulmasına değineceğim.
+İlk yazıda yüzeysel geçtiğimiz bazı yerlere daha detaylıca bakıcağız.
+
+   Bu yazımızda Database,MVC gibi yapıları kullanabilmemiz için alt yapıyı oluşturacağız.
+Database olarak MongoDB yi kullanacağız, MongoDB NodeJS ile oldukça uyumlu çalışan bir 
+NoSQL server geliştirmesi Google tarafından yapılmakta. 
+
+    Nedir bu NoSQL? Datatını Google da aratabilirsiniz, ama ben yinde anlatmaya çalışayım.
+MS Sql gibi RDBMSler de kullanılan SQL dili kullanılmadığı için adı NoSQL konulmuş, MS Sql deki 
+gibi bir transaction başladığında Database'i kilitleyip ikinci bir isteği engellemez. NoSQL de 
+PrimaryKey bulunur fakat Foreign Key bulunmaz ve Tablolar arasında bağlantı yapılamaz.
+NoSQL de Tabloda bulunmaz! :) Bunun yerine kolleksiyonlar vardır. Her kolleksiyon içinde string değerler tutar.
+Yani MSSQL deki sabit Tablo  yapısı geçerli değildir! Kolleksiyona ekledğiniz bir string değer ile sonra eklediğiniz 
+arasında hiç bir bağ yoktur. Alanlara istediğiniz gibi atabilirsiniz. Kolleksiyonlar veriyi Json olarak tutarlar.
+
+    NoSql de MS SQL deki gibi yapıların olmayışı basit oluşu çok hızlı çalışmasını sağlar ama
+bu herzaman da iyi değildir. Birçok tablo ile join yapmanız gerekiyorsa NoSQL sizi çok yorucaktır bu iş için MS Sql daha mantıklıdır.
+Ve önemli bir uyarı NoSql de MS Sql gibi kontrol yapıları bulunmadığı için her kaydın uygunluğunu siz kontrol etmek zorundasınız.
+
+    Herneyse daha fazlasını Googledan bakarsınız, şimdi MongoDB yi kurarım. (https://www.mongodb.org/downloads)
+
+	MongoDB yi kurduktan sonra gelelim ExpressJS'e, MongoDB'nin ayaranmasını sonra göstericem.
+ExpressJS NodeJS için yazılmış bir frameworktür. NodeJS ile MVC patternini uygulamamızı sağlar.
+Biz Routing ve Middleware larımızı ExpressJS ile oluşturucaz.
+    
+	 Express'i kurmak için Komut satırından Proje'nin(server.js) bulunduğu dizine gidiyoruz.
+İlk olarak komut satırına "npm init" yazıp Enter'a basıyoruz. Bu sayede NPM bizim için gerekli ayarlamaları yapıyor.
+Sırasıyla;
+
+*name: Proje ismini yazıyoruz ben "NodeWiki" yazıdım.
+*version: "1.2.3" versiyon numarası ben 0.0.1 yazmıştım size kalmış.
+*description: açıklama yazıyoruz.
+*entry point: "server.js" NodeJs sunucu kodalrımızın bulunduğu dosyanın adı. 
+*test command: Buraya önceden yazdığımız "node server.js" komutunu yazıyoruz.
+*git repository: Boş bıraksakta olur. 
+*keywords: Boş bıraksakta olur. 
+*author: Adınızı yazıyoruz.
+*license: "BSD"	Proje lisansımız. TeknoSeyirde lisanlar hakkında videso vardı.
+
+Onayladığımızda NPM bizim için package.json dosyasını oluşturacak. Projemiz için ilk 
+ayarlama diyebiliriz. Bu dosyada Proje bilgileri ve Projede kullanılan NodeJS Module Bilgileri tutulmakta olucak.
+
+      Bunları yaptıktan sonra Komut Satırına "npm install express --save" komutu ile expresi indirip kuruyoruz.
+"--save" Az önce oluşturduğumuz Package.json dosyamıza ExpressJS'i eklemesi için, istersek kendimiz ellede yazabiliriz.
+NPM bu modulü Proje dizinindeki node_modules klasörünün altına attı. İstersek install komutundan sonra "-g" yazarak Global 
+bir dizinede kurmasını sağlayabiliriz. Windowsta user/appData/roaming/npm/node_modules altına atmakta default olarak.
+
+	  Hemen ardından MongoDB ile bağlantı kurup işlemler yapabilmemiz için Mongoseeyi kuruyoruz;
+"npm install mongoose --save" buda tamamdır :) artık kodlamaya geçebiliriz.
+
+Mongosee hakkında daha fazla bilgi için:http://mongoosejs.com/docs/index.html
+Express hakkında daha fazla bilgi için:http://expressjs.com/
+
+İlk olarak server.js dosyamızı açıp için aşağıdaki gibi değiştirelim.
+///////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////
