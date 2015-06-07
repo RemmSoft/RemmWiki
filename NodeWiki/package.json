@@ -1,0 +1,24 @@
+{
+  "name": "NodeWiki",
+  "version": "0.0.1",
+  "description": "MEAN Wiki Project",
+  "main": "server.js",
+  "dependencies": {
+    "grunt": "~0.4.5",
+    "http": "0.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RemmSoft/RemmWiki.git"
+  },
+  "author": "Sevcan ALKAN",
+  "license": "FreeBSD",
+  "bugs": {
+    "url": "https://github.com/RemmSoft/RemmWiki/issues"
+  }
+}
